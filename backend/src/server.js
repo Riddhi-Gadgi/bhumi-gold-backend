@@ -23,12 +23,14 @@ mongoose
 
 // Middlewares
 app.use(express.json());
+const cors = require("cors");
+
 app.use(
   cors({
-    origin: process.env.FRONTEND_ORIGIN || "http://localhost:5173",
-    credentials: true,
+    origin: "https://majestic-blini-f6a079.netlify.app",
   }),
 );
+
 app.use((err, req, res, next) => {
   console.error(" Unhandled error:", err.stack);
   res.status(500).json({ message: err.message });
@@ -94,7 +96,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/public/products", productRoutes.public);
 app.use("/api/public/categories", categoryRoutes.public);
 app.use("/api/public/metals", metalRoutes.public);
-app.use("/api/public/metal-rates", metalRatePublicRoutes); // ✅ public metal rates
+app.use("/api/public/metal-rates", metalRatePublicRoutes); //  public metal rates
 
 // ==================== Customer Routes (authenticated) ====================
 app.use("/api/cart", ensureAuth, cartRoutes);
@@ -121,7 +123,7 @@ app.use(
   ensureAuth,
   ensureAdmin,
   metalRateAdminRoutes,
-); // ✅ admin metal rates
+); //  admin metal rates
 app.use("/api/admin/metal-stock", ensureAuth, ensureAdmin, metalStockRoutes);
 app.use(
   "/api/admin/metal-stock-transactions",
